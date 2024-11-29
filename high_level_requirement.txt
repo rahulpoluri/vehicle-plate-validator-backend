@@ -1,0 +1,12 @@
+The goal of the task is to build a simple backend application that accepts valid German
+license plates, stores them in a database and provides an endpoint to retrieve all stored
+plates. Secondly, we want to build a similarity search over the database .
+The app should be written in Python 3, using the Fastapi web framework and SQLAlchemy as
+ORM. Please, add also Unit tests to the project and pack it in a docker componse.
+
+use redis cache for search api
+
+this data is generated from traffic sensors which read the number plates
+peak load is around 3000 vehicles per hour
+vehicle record should be retained for 365 days in db
+

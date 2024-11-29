@@ -1,0 +1,62 @@
+
+These are the two endpoints to store and retrieve the data:
+
+POST /plate
+
+The endpoint accepts a plate, checks if it is a valid German plate and if so stores the plate
+with the current timestamp in the database.
+Body:
+{
+“plate”: “M-PP123”
+}
+Return values:
+200 if the plate is valid
+400 if the request is malformed (e.g. plate field in json is missing)
+422 if the plate is not a valid German plate
+Please validate the license plate. The format is the following
+● 1 to 3 characters before the hyphen (M-AA123)
+● 1 or 2 characters after the hyphen (M-AA123)
+● A maximum 4 digits number in the end (can’t start with a 0) (M-AA123)
+
+GET /plate
+
+Returns all plates in the database with their corresponding timestamp
+Response:
+[
+{
+“plate”: “M-PP123”,
+“timestamp”: “2020-09-18T13:21:21Z”
+},
+{
+“plate”: “K-A123”,
+“timestamp”: “2020-09-18T14:21:21Z”
+}
+]
+
+After we stored the license plate we want to build an endpoint to search the database :
+
+
+GET /search-plate?key=ABC123&levenshtein=1
+
+The endpoint returns all license plate which have a levensthein distance which is less or
+equal than the one provided in the query (levenshtein) to a search key (key). We don’t
+care about hyphen in the license plates.
+
+Response:
+{
+“ABC123”:
+[
+{
+“plate”: “ABC123”,
+“timestamp”: “2020-09-18T13:21:21Z”
+},
+{
+“plate”: “ACC123”,
+“timestamp”: “2020-09-18T14:21:21Z”
+},
+{
+“plate”: “ACC123”,
+“timestamp”: “2020-09-18T12:11:21Z”
+}
+],
+}
