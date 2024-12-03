@@ -6,8 +6,7 @@ authors = ["rahulpoluri <rahulpoluri314@gmail.com>"]
 readme = "README.md"
 package-mode = false
 packages = [
-    { include = "app" },
-    { include = "scripts"},
+    { include = "app" }
 ]
 
 [tool.poetry.dependencies]
@@ -29,7 +28,7 @@ black = "^24.10.0"
 httpx = "^0.28.0"
 
 [tool.poetry.scripts]
-lint = "scripts.lint:main"
+lint = "app.scripts.lint:main"
 
 [build-system]
 requires = ["poetry-core"]
