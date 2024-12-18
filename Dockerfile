@@ -33,7 +33,7 @@ COPY --from=builder /usr/local/bin /usr/local/bin
 COPY ./app ./app
 
 # Expose the port that FastAPI will use
-EXPOSE 80
+EXPOSE 8000
 
 # Command to run the FastAPI app
-CMD ["fastapi", "run" ,"/code/app/main.py", "--port", "80"]
+CMD ["fastapi", "run" ,"/code/app/main.py", "--port", "8000"]

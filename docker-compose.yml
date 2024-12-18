@@ -1,0 +1,45 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Use the Dockerfile from the root
+    container_name: fastapi_app
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@db:5432/vehicle-plates
+      - REDIS_URL=redis://redis:6379
+    depends_on:
+      - db
+      - redis
+    volumes:
+      - ./app:/app
+
+  db:
+    image: postgres:17.2
+    container_name: postgres-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: vehicle-plates
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7.4.1
+    container_name: redis
+    ports:
+      - "6379:6379"
+
+  nginx:
+    image: nginx:1.27.3
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./docker/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app
+
+volumes:
+  postgres_data:
