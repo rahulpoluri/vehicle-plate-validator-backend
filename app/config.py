@@ -1,7 +1,7 @@
 from pydantic import BaseSettings
 
 
-class Settings(BaseSettings):
+class Settings(BaseSettings):  # type: ignore
     database_url: str
     secret_key: str
 
@@ -9,4 +9,4 @@ class Settings(BaseSettings):
         env_file = ".env"
 
 
-settings = Settings()
+settings: Settings = Settings()
