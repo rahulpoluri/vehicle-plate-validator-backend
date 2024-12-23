@@ -10,8 +10,9 @@ services:
     depends_on:
       - db
       - redis
+    restart: always
     volumes:
-      - ./app:/app
+      - ./app:/code/app
 
   db:
     image: postgres:17.2
