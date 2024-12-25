@@ -17,7 +17,7 @@ RUN poetry config virtualenvs.create false
 RUN poetry install --without dev
 
 # Copy the application code
-COPY ./app ./app
+COPY ./application ./application
 
 # # Stage 2: Runtime stage
 FROM python:3.13-slim
@@ -25,15 +25,18 @@ FROM python:3.13-slim
 # # Set the working directory
 WORKDIR /code
 
+# Install the PostgreSQL client
+RUN apt-get update && apt-get install -y postgresql-client
+
 # # Copy installed dependencies from the builder stage
 COPY --from=builder /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
 COPY --from=builder /usr/local/bin /usr/local/bin
 
 # Copy the application code
-COPY ./app ./app
+COPY ./application ./application
 
 # Expose the port that FastAPI will use
 EXPOSE 8000
 
 # Command to run the FastAPI app
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]
+CMD ["uvicorn", "application.main:app", "--host", "0.0.0.0", "--port", "8000", "--reload"]

@@ -1,5 +1,0 @@
-# ignore python cache files and directoryes
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
