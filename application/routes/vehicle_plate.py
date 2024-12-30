@@ -1,8 +1,14 @@
+import math
+from datetime import datetime
+
 from fastapi import APIRouter, Depends, Response
 
-from application.schemas.vehicle_plate import (GetVehiclePlateRequestModel,
-                                               GetVehiclePlateResponseModel,
-                                               PostVehiclePlateRequestModel)
+from application.db.models import Plates
+from application.schemas.vehicle_plate import (
+    GetVehiclePlateRequestModel,
+    GetVehiclePlateResponseModel,
+    PostVehiclePlateRequestModel,
+)
 
 router = APIRouter(
     prefix="/plate",
@@ -17,20 +23,22 @@ router = APIRouter(
     response_model=GetVehiclePlateResponseModel,
 )
 async def get_plate(params: GetVehiclePlateRequestModel = Depends()):
-    return {
-        "data": [
-            {"plate": "M-PP123", "timestamp": "2020-09-18T13:21:21Z"},
-            {"plate": "K-A123", "timestamp": "2020-09-18T14:21:21Z"},
-        ],
-        "pagination": {
-            "page_number": 1,
-            "page_size": 10,
-            "total_pages": 5,
-            "total_items": 50,
-        },
+    data, total = Plates.get_with_fuzzy_search(
+        params.search_key.upper(),
+        params.levenshtein,
+        params.page_size,
+        params.page_number,
+    )
+    pagination = {
+        "page_number": params.page_number,
+        "page_size": params.page_size,
+        "total_pages": math.ceil(total / params.page_size),
+        "total_items": total,
     }
+    return {"data": data, "pagination": pagination}
 
 
 @router.post("", responses={201: {"description": "Created"}})
 async def post_plate(data: PostVehiclePlateRequestModel):
+    Plates.put(Plates(plate=data.plate, timestamp=datetime.now()))
     return Response(status_code=201)
