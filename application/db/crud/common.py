@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from sqlalchemy import text
 
 from application.db.connection import SessionLocal
@@ -59,3 +60,16 @@ class Mixin:
             session.add(data)
             session.commit()
             return data
+
+    @classmethod
+    def get_one_or_404(cls, **data):
+        with cls.get_session() as session:
+            response = session.query(cls).filter_by(**data).first()
+            if response is None:
+                raise HTTPException(status_code=404, detail="Not Found")
+            return response
+
+    def save(self):
+        with self.get_session() as session:
+            session.add(self)
+            session.commit()

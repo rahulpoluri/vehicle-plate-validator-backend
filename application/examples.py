@@ -12,3 +12,5 @@ PLATE_GET_RESPONSE_SCHEMA_EXAMPLE = {
         "total_items": 50,
     },
 }
+
+USERS_PATCH_REQUEST_SCHEMA_EXAMPLE = {"password": "new_password"}

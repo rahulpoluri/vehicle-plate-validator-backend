@@ -12,7 +12,7 @@ from application.schemas.vehicle_plate import (
 
 router = APIRouter(
     prefix="/plate",
-    tags=["vehicle_plates"],
+    tags=["Vehicle Plates"],
     # dependencies=[Depends(get_token_header)]},
 )
 

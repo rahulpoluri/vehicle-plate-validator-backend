@@ -19,3 +19,13 @@ class Plates(Basemodel, Mixin):
 
     class Config:
         orm_mode = True
+
+
+class Users(Basemodel, Mixin):
+    __tablename__ = "users"
+    username = Column(String(50), nullable=False)
+    password = Column(String(255), nullable=False)
+    role = Column(String(20), nullable=False)
+
+    class Config:
+        orm_mode = True

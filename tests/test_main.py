@@ -1,5 +1,8 @@
+from dotenv import load_dotenv
 from fastapi.testclient import TestClient
 
-from application.main import app
+load_dotenv()
+
+from application.main import app  # noqa
 
 client = TestClient(app)
